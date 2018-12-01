@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -83,6 +84,8 @@ public class MainActivity extends AppCompatActivity{
         updateUI(null);
     }
 
+
+
     @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {
@@ -93,7 +96,6 @@ public class MainActivity extends AppCompatActivity{
             super.onBackPressed();
         }
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -134,6 +136,25 @@ public class MainActivity extends AppCompatActivity{
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         searchView.setIconifiedByDefault(true);
+
+        // Get all favorites from main list
+        MenuItem selectAllFavorites = menu.findItem(R.id.showFavorites);
+        selectAllFavorites.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (!item.isChecked()) {
+                    item.setIcon(R.drawable.menu_favorite_selected);
+                    item.setChecked(true);
+                } else {
+                    item.setIcon(R.drawable.menu_favorite_unselected);
+                    item.setChecked(false);
+                }
+
+                updateUIToFavorites(item.isChecked());
+//                updateUIToFavorites();
+                return false;
+            }
+        });
 
         return true;
     }
@@ -188,6 +209,19 @@ public class MainActivity extends AppCompatActivity{
         } else {
             empty.setVisibility(View.GONE);
         }
+    }
+
+    private void updateUIToFavorites(Boolean selectFavorites) {
+
+        contatos.clear();
+
+        if (selectFavorites) {
+            contatos.addAll(cDAO.buscaContatosFavoritos());
+        } else {
+            contatos.addAll(cDAO.buscaTodosContatos());
+        }
+
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     private void setupRecyclerView() {
