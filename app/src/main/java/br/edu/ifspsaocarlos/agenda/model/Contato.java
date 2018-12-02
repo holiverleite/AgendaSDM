@@ -7,7 +7,10 @@ public class Contato implements Serializable{
     private long id;
     private String nome;
     private String fone;
+    private String cellPhone;
     private String email;
+
+    private String aniversario;
     private Boolean favorito;
 
     public Contato() { }
@@ -43,6 +46,22 @@ public class Contato implements Serializable{
 
     public void setFavorito(Boolean favorito) {
         this.favorito = favorito;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public String getAniversario() {
+        return aniversario;
+    }
+
+    public void setAniversario(String aniversario) {
+        this.aniversario = aniversario;
     }
 }
 

@@ -186,18 +186,18 @@ public class MainActivity extends AppCompatActivity{
                 .show();
     }
 
-    private void updateUI(String nomeContato) {
+    private void updateUI(String nomeContatoOuEmail) {
 
         contatos.clear();
 
-        if (nomeContato == null) {
+        if (nomeContatoOuEmail == null) {
             contatos.addAll(cDAO.buscaTodosContatos());
             empty.setText(getResources().getString(R.string.lista_vazia));
             fab.show();
         }
 
         else {
-            contatos.addAll(cDAO.buscaContato(nomeContato));
+            contatos.addAll(cDAO.buscaContato(nomeContatoOuEmail));
             empty.setText(getResources().getString(R.string.contato_nao_encontrado));
             fab.hide();
         }
@@ -216,12 +216,24 @@ public class MainActivity extends AppCompatActivity{
         contatos.clear();
 
         if (selectFavorites) {
-            contatos.addAll(cDAO.buscaContatosFavoritos());
+            List<Contato> contatosArray = cDAO.buscaContatosFavoritos();
+            if (contatosArray.size() > 0) {
+                contatos.addAll(contatosArray);
+            } else {
+                empty.setText(getResources().getString(R.string.lista_favoritos_vazia));
+                fab.show();
+            }
         } else {
             contatos.addAll(cDAO.buscaTodosContatos());
         }
 
         recyclerView.getAdapter().notifyDataSetChanged();
+
+        if (recyclerView.getAdapter().getItemCount() == 0) {
+            empty.setVisibility(View.VISIBLE);
+        } else {
+            empty.setVisibility(View.GONE);
+        }
     }
 
     private void setupRecyclerView() {

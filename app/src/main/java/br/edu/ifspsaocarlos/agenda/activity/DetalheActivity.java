@@ -32,8 +32,12 @@ public class DetalheActivity extends AppCompatActivity {
             nameText.setText(c.getNome());
             EditText foneText = (EditText)findViewById(R.id.editTextFone);
             foneText.setText(c.getFone());
+            EditText cellPhone = (EditText)findViewById(R.id.editTextcellPhone);
+            cellPhone.setText(c.getCellPhone());
             EditText emailText = (EditText)findViewById(R.id.editTextEmail);
             emailText.setText(c.getEmail());
+            EditText aniversarioText = (EditText)findViewById(R.id.editTextAniversario);
+            aniversarioText.setText(c.getAniversario());
             int pos =c.getNome().indexOf(" ");
             if (pos==-1)
                 pos=c.getNome().length();
@@ -81,7 +85,9 @@ public class DetalheActivity extends AppCompatActivity {
 
         String name = ((EditText) findViewById(R.id.editTextNome)).getText().toString();
         String fone = ((EditText) findViewById(R.id.editTextFone)).getText().toString();
+        String cellPhone = ((EditText) findViewById(R.id.editTextcellPhone)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
+        String aniversario = ((EditText) findViewById(R.id.editTextAniversario)).getText().toString();
 
         if (c == null) {
             c = new Contato();
@@ -90,6 +96,8 @@ public class DetalheActivity extends AppCompatActivity {
         c.setNome(name);
         c.setFone(fone);
         c.setEmail(email);
+        c.setCellPhone(cellPhone);
+        c.setAniversario(aniversario);
         c.setFavorito(false);
 
         cDAO.salvaContato(c);

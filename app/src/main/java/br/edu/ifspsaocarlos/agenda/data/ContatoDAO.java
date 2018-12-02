@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.renderscript.Sampler;
 import android.util.Log;
 
 import br.edu.ifspsaocarlos.agenda.adapter.ContatoAdapter;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContatoDAO {
-    static final String MY_LOG = "MY_LOG";
 
     private SQLiteDatabase database;
     private SQLiteHelper dbHelper;
@@ -22,14 +22,13 @@ public class ContatoDAO {
     }
 
     public  List<Contato> buscaTodosContatos() {
-        Log.e(MY_LOG,"CARREGA TODOS OS CONTATOS");
         database = dbHelper.getReadableDatabase();
         List<Contato> contatos = new ArrayList<>();
 
         Cursor cursor;
 
         String[] cols = new String[] {
-                SQLiteHelper.KEY_ID,SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_FONE, SQLiteHelper.KEY_EMAIL, SQLiteHelper.KEY_FAVORITE
+                SQLiteHelper.KEY_ID,SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_FONE, SQLiteHelper.KEY_EMAIL, SQLiteHelper.KEY_FAVORITE, SQLiteHelper.KEY_CELLPHONE, SQLiteHelper.KEY_ANIVERSARIO
         };
 
         cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, null , null,
@@ -40,8 +39,11 @@ public class ContatoDAO {
             contato.setId(cursor.getInt(0));
             contato.setNome(cursor.getString(1));
             contato.setFone(cursor.getString(2));
-            contato.setEmail(cursor.getString(3));
-            int favoriteValue = cursor.getInt(4);
+            contato.setCellPhone(cursor.getString(3));
+            contato.setEmail(cursor.getString(4));
+            contato.setAniversario(cursor.getString(5));
+
+            int favoriteValue = cursor.getInt(6);
             Boolean favorito = favoriteValue > 0 ? true : false;
             contato.setFavorito (favorito);
             contatos.add(contato);
@@ -53,7 +55,7 @@ public class ContatoDAO {
         return contatos;
     }
 
-    public  List<Contato> buscaContato(String nome) {
+    public  List<Contato> buscaContato(String nomeOuEmail) {
 
         database = dbHelper.getReadableDatabase();
         List<Contato> contatos = new ArrayList<>();
@@ -61,10 +63,11 @@ public class ContatoDAO {
         Cursor cursor;
 
         String[] cols = new String[] {
-                SQLiteHelper.KEY_ID,SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_FONE, SQLiteHelper.KEY_EMAIL, SQLiteHelper.KEY_FAVORITE
+                SQLiteHelper.KEY_ID,SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_FONE, SQLiteHelper.KEY_EMAIL, SQLiteHelper.KEY_FAVORITE, SQLiteHelper.KEY_CELLPHONE, SQLiteHelper.KEY_ANIVERSARIO
         };
-        String where=SQLiteHelper.KEY_NAME + " like ?";
-        String[] argWhere = new String[]{nome + "%"};
+
+        String where=SQLiteHelper.KEY_NAME + " like ? OR " + SQLiteHelper.KEY_EMAIL + " like ?";
+        String[] argWhere = new String[]{nomeOuEmail + "%", nomeOuEmail + "%"};
 
         cursor = database.query(SQLiteHelper.DATABASE_TABLE, cols, where , argWhere,
                 null, null, SQLiteHelper.KEY_NAME);
@@ -74,8 +77,11 @@ public class ContatoDAO {
             contato.setId(cursor.getInt(0));
             contato.setNome(cursor.getString(1));
             contato.setFone(cursor.getString(2));
-            contato.setEmail(cursor.getString(3));
-            int favoriteValue = cursor.getInt(4);
+            contato.setCellPhone(cursor.getString(3));
+            contato.setEmail(cursor.getString(4));
+            contato.setAniversario(cursor.getString(5));
+
+            int favoriteValue = cursor.getInt(6);
             Boolean favorito = favoriteValue > 0 ? true : false;
             contato.setFavorito (favorito);
             contatos.add(contato);
@@ -94,7 +100,7 @@ public class ContatoDAO {
         Cursor cursor;
 
         String[] cols = new String[] {
-                SQLiteHelper.KEY_ID,SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_FONE, SQLiteHelper.KEY_EMAIL, SQLiteHelper.KEY_FAVORITE
+                SQLiteHelper.KEY_ID,SQLiteHelper.KEY_NAME, SQLiteHelper.KEY_FONE, SQLiteHelper.KEY_EMAIL, SQLiteHelper.KEY_FAVORITE, SQLiteHelper.KEY_CELLPHONE, SQLiteHelper.KEY_ANIVERSARIO
         };
 
         String where = SQLiteHelper.KEY_FAVORITE + " == ?";
@@ -107,8 +113,13 @@ public class ContatoDAO {
             contato.setId(cursor.getInt(0));
             contato.setNome(cursor.getString(1));
             contato.setFone(cursor.getString(2));
-            contato.setEmail(cursor.getString(3));
-            contato.setFavorito (true);
+            contato.setCellPhone(cursor.getString(3));
+            contato.setEmail(cursor.getString(4));
+            contato.setAniversario(cursor.getString(5));
+
+            int favoriteValue = cursor.getInt(6);
+            Boolean favorito = favoriteValue > 0 ? true : false;
+            contato.setFavorito (favorito);
             contatos.add(contato);
         }
         cursor.close();
@@ -122,7 +133,9 @@ public class ContatoDAO {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.KEY_NAME, c.getNome());
         values.put(SQLiteHelper.KEY_FONE, c.getFone());
+        values.put(SQLiteHelper.KEY_CELLPHONE, c.getCellPhone());
         values.put(SQLiteHelper.KEY_EMAIL, c.getEmail());
+        values.put(SQLiteHelper.KEY_ANIVERSARIO, c.getAniversario());
         values.put(SQLiteHelper.KEY_FAVORITE, c.getFavorito());
 
        if (c.getId() > 0) {
