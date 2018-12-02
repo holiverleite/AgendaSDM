@@ -72,8 +72,7 @@ public class DetalheActivity extends AppCompatActivity {
         }
     }
 
-    private void apagar()
-    {
+    private void apagar() {
         cDAO.apagaContato(c);
 
         Intent resultIntent = new Intent();

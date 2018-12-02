@@ -39,16 +39,18 @@ class SQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
-            String upgradeDatabase = "ALTER TABLE " + DATABASE_TABLE + "ADD COLUMN " + KEY_FAVORITE + "INTEGER";
+            String upgradeDatabase = "ALTER TABLE " + DATABASE_TABLE + " ADD COLUMN " + KEY_FAVORITE + " INTEGER";
             database.execSQL(upgradeDatabase);
-        } else
+        }
 
         if (oldVersion < 3) {
-
-        } else
+            String upgradeDatabase = "ALTER TABLE " + DATABASE_TABLE + " ADD COLUMN " + KEY_CELLPHONE + "  TEXT";
+            database.execSQL(upgradeDatabase);
+        }
 
         if (oldVersion < 4) {
-
+            String upgradeDatabase = "ALTER TABLE " + DATABASE_TABLE + " ADD COLUMN " + KEY_ANIVERSARIO + " TEXT";
+            database.execSQL(upgradeDatabase);
         }
     }
 }

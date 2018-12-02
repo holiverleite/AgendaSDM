@@ -39,13 +39,15 @@ public class ContatoDAO {
             contato.setId(cursor.getInt(0));
             contato.setNome(cursor.getString(1));
             contato.setFone(cursor.getString(2));
-            contato.setCellPhone(cursor.getString(3));
-            contato.setEmail(cursor.getString(4));
-            contato.setAniversario(cursor.getString(5));
+            contato.setEmail(cursor.getString(3));
 
-            int favoriteValue = cursor.getInt(6);
+            int favoriteValue = cursor.getInt(4);
             Boolean favorito = favoriteValue > 0 ? true : false;
             contato.setFavorito (favorito);
+
+            contato.setCellPhone(cursor.getString(5));
+            contato.setAniversario(cursor.getString(6));
+
             contatos.add(contato);
         }
 
@@ -55,7 +57,7 @@ public class ContatoDAO {
         return contatos;
     }
 
-    public  List<Contato> buscaContato(String nomeOuEmail) {
+    public List<Contato> buscaContato(String nomeOuEmail) {
 
         database = dbHelper.getReadableDatabase();
         List<Contato> contatos = new ArrayList<>();
@@ -77,18 +79,21 @@ public class ContatoDAO {
             contato.setId(cursor.getInt(0));
             contato.setNome(cursor.getString(1));
             contato.setFone(cursor.getString(2));
-            contato.setCellPhone(cursor.getString(3));
-            contato.setEmail(cursor.getString(4));
-            contato.setAniversario(cursor.getString(5));
+            contato.setEmail(cursor.getString(3));
 
-            int favoriteValue = cursor.getInt(6);
+            int favoriteValue = cursor.getInt(4);
             Boolean favorito = favoriteValue > 0 ? true : false;
             contato.setFavorito (favorito);
+
+            contato.setCellPhone(cursor.getString(5));
+            contato.setAniversario(cursor.getString(6));
+
             contatos.add(contato);
         }
-        cursor.close();
 
+        cursor.close();
         database.close();
+
         return contatos;
     }
 
@@ -113,16 +118,20 @@ public class ContatoDAO {
             contato.setId(cursor.getInt(0));
             contato.setNome(cursor.getString(1));
             contato.setFone(cursor.getString(2));
-            contato.setCellPhone(cursor.getString(3));
-            contato.setEmail(cursor.getString(4));
-            contato.setAniversario(cursor.getString(5));
+            contato.setEmail(cursor.getString(3));
 
-            int favoriteValue = cursor.getInt(6);
+            int favoriteValue = cursor.getInt(4);
             Boolean favorito = favoriteValue > 0 ? true : false;
             contato.setFavorito (favorito);
+
+            contato.setCellPhone(cursor.getString(5));
+            contato.setAniversario(cursor.getString(6));
+
             contatos.add(contato);
         }
+
         cursor.close();
+        database.close();
 
         return contatos;
     }
